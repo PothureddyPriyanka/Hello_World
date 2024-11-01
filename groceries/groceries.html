@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: #333;
+            flex-direction: column;
+        }
+
+        .form-container, .output-container {
+            width: 350px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #4e54c8;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .item-group {
+            margin-top: 10px;
+        }
+
+        .item-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .quantity-input {
+            margin-left: 10px;
+            width: 60px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .output-container {
+            display: none;
+            text-align: center;
+        }
+
+        .output-container h3 {
+            color: #4e54c8;
+        }
+
+        .output-container p {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Grocery List</h2>
+    <form id="grocery-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+            <label>Category and Items</label>
+            <div class="item-group">
+                <label>Fruits:</label><br>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Apple" data-price="30"> Apple - ₹30
+                    <input type="number" class="quantity-input" name="quantity-Apple" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Banana" data-price="10"> Banana - ₹10
+                    <input type="number" class="quantity-input" name="quantity-Banana" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Orange" data-price="25"> Orange - ₹25
+                    <input type="number" class="quantity-input" name="quantity-Orange" min="1" placeholder="Qty">
+                </div>
+            </div>
+            <div class="item-group">
+                <label>Vegetables:</label><br>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Carrot" data-price="20"> Carrot - ₹20
+                    <input type="number" class="quantity-input" name="quantity-Carrot" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Broccoli" data-price="50"> Broccoli - ₹50
+                    <input type="number" class="quantity-input" name="quantity-Broccoli" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Spinach" data-price="15"> Spinach - ₹15
+                    <input type="number" class="quantity-input" name="quantity-Spinach" min="1" placeholder="Qty">
+                </div>
+            </div>
+            <div class="item-group">
+                <label>Dairy:</label><br>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Milk" data-price="25"> Milk - ₹25
+                    <input type="number" class="quantity-input" name="quantity-Milk" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Cheese" data-price="80"> Cheese - ₹80
+                    <input type="number" class="quantity-input" name="quantity-Cheese" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Butter" data-price="60"> Butter - ₹60
+                    <input type="number" class="quantity-input" name="quantity-Butter" min="1" placeholder="Qty">
+                </div>
+            </div>
+            <div class="item-group">
+                <label>Grains:</label><br>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Rice" data-price="40"> Rice - ₹40
+                    <input type="number" class="quantity-input" name="quantity-Rice" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Bread" data-price="30"> Bread - ₹30
+                    <input type="number" class="quantity-input" name="quantity-Bread" min="1" placeholder="Qty">
+                </div>
+                <div class="item-option">
+                    <input type="checkbox" name="items" value="Pasta" data-price="50"> Pasta - ₹50
+                    <input type="number" class="quantity-input" name="quantity-Pasta" min="1" placeholder="Qty">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Add to List</button>
+    </form>
+</div>
+
+<div class="output-container" id="output-container">
+    <h3>Selected Items and Total Price</h3>
+    <div id="output"></div>
+</div>
+
+<script>
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const checkboxes = document.querySelectorAll("input[name='items']:checked");
+        const outputContainer = document.getElementById("output-container");
+        const outputDiv = document.getElementById("output");
+
+        outputDiv.innerHTML = ""; // Clear previous output
+        let totalCost = 0;
+
+        // Loop through selected checkboxes
+        checkboxes.forEach(checkbox => {
+            const itemName = checkbox.value;
+            const pricePerItem = parseFloat(checkbox.getAttribute("data-price"));
+            const quantityInput = document.querySelector(`input[name='quantity-${itemName}']`);
+            const quantity = parseInt(quantityInput.value, 10) || 1;
+            const itemTotal = pricePerItem * quantity;
+
+            // Display selected item details
+            const itemInfo = document.createElement("p");
+            itemInfo.textContent = `Item: ${itemName}, Quantity: ${quantity}, Price per item: ₹${pricePerItem.toFixed(2)}, Total: ₹${itemTotal.toFixed(2)}`;
+            outputDiv.appendChild(itemInfo);
+
+            // Add to total cost
+            totalCost += itemTotal;
+        });
+
+        // Display total cost
+        const totalCostInfo = document.createElement("p");
+        totalCostInfo.style.fontWeight = "bold";
+        totalCostInfo.textContent = `Total Cost: ₹${totalCost.toFixed(2)}`;
+        outputDiv.appendChild(totalCostInfo);
+
+        // Show the output container
+        outputContainer.style.display = "block";
+
+        // Reset the form
+        document.getElementById("grocery-form").reset();
+    }
+</script>
+
+</body>
+</html>
